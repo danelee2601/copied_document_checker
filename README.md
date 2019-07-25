@@ -12,13 +12,13 @@ numpy, pandas, matplotlib, scikit-learn, pdfminer.six, docx
 
 <h2>Quick Start</h2>
 <pre>
-from copied_document_checker import copied_document_checker<br>
+from copied_document_checker import copied_doc_checker<br>
 
 \# directory of a folder that contains the document files that you want to inspect.
 dirpath = './students_homeworks_example'
 
 \# run
-checker = copied_document_checker.CopiedDocumentChecker(dirpath)
+checker = copied_doc_checker.CopiedDocumentChecker(dirpath)
 checker.run(n_top_likely=15)   # number of documents that are the most likely to be copied. 
 </pre>
 
