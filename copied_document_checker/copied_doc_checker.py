@@ -6,54 +6,61 @@ from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import pdfminer
+import comtypes.client
+#import pdfminer.six
+
 
 class Converter(object):
     def __init__(self,):
         self.compiled_re = re.compile('(?<=[.]).*')
+        self.doc_or_docx2pdf_files = []
 
     def run(self, fname, hw_dirname):
+        print('{}'.format(fname))
         chg_fname = self.compiled_re.sub('txt', fname)
+        fext_name = re.search('(?<=[.]).*', fname).group(0)
 
-        if 'docx' in fname:
-            docx2txt = self.getText(fname)
-            # save
-            with open('./{}/{}'.format(hw_dirname, chg_fname), 'w') as f:
-                f.write(docx2txt)
+        if ('doc' == fext_name) or ('docx' == fext_name):
+            # convert .docx to .pdf
+            chg2pdf_fname = self.docx2pdf(fname, fext_name)
+            self.pdf2txt(hw_dirname, chg_fname, chg2pdf_fname)
+        elif 'pdf' == fext_name:
+            self.pdf2txt(hw_dirname, chg_fname, fname)
 
-        elif 'pdf' in fname:
-            output_filepath = './{}/{}'.format(hw_dirname, chg_fname)
+    def docx2pdf(self, filename, fext_name):
+        wdFormatPDF = 17
+        in_file = os.getcwd() + '/{}'.format(filename)
+        out_file = os.getcwd() + '/{}'.format(filename.replace('.{}'.format(fext_name), '.pdf'))
+        chg2pdf_fname = filename.replace('.{}'.format(fext_name), '.pdf')
 
-            pdf2txt_path = re.search('.*(?=\\\python)', sys.executable).group(0)
-            pdf2txt_path = pdf2txt_path.replace('\\', '/')
-            if 'Scripts' not in pdf2txt_path:
-                pdf2txt_path = pdf2txt_path + '/Scripts'
+        word = comtypes.client.CreateObject('Word.Application')
+        doc = word.Documents.Open(in_file)
+        doc.SaveAs(out_file, FileFormat=wdFormatPDF)
+        doc.Close()
+        word.Quit()
+        self.doc_or_docx2pdf_files.append(chg2pdf_fname)
+        return chg2pdf_fname
 
-            if os.path.isfile(pdf2txt_path + '/pdf2txt.py'):
-                os.system('{} {}/pdf2txt.py {} -o {}'.format(
-                    sys.executable,
-                    pdf2txt_path,
-                    fname,
-                    output_filepath))
-            else:
-                raise ImportError('Please do "pip install pdfminer.six" -> pdf2txt converting library')
+    def pdf2txt(self, hw_dirname, chg_fname, pdf_fname):
+        output_filepath = './{}/{}'.format(hw_dirname, chg_fname)
 
-        #elif 'hwp' in fname:
-        #    f = OleFile(fname)
-        #    f.get_stream('PrvText').decode('utf-16le')
-        #    try:
+        pdf2txt_path = re.search('.*(?=\\\python)', sys.executable).group(0)
+        pdf2txt_path = pdf2txt_path.replace('\\', '/')
+        if 'Scripts' not in pdf2txt_path:
+            pdf2txt_path = pdf2txt_path + '/Scripts'
 
-        #    except:
-        #        # make None file
+        if os.path.isfile(pdf2txt_path + '/pdf2txt.py'):
+            os.system('{} {}/pdf2txt.py {} -o {}'.format(
+                sys.executable,
+                pdf2txt_path,
+                pdf_fname,
+                output_filepath))
+        else:
+            raise ImportError('Please do "pip install pdfminer.six" -> pdf2txt converting library')
 
-    def getText(self, filename):
-        doc = docx.Document(filename)
-        fullText = []
-        for para in doc.paragraphs:
-            txt = para.text
-            fullText.append(txt)
-        return '\n'.join(fullText)
-
+    def del_doc_or_docx2pdf_fils(self):
+        for fn in self.doc_or_docx2pdf_files:
+            os.unlink(os.getcwd() + '/{}'.format(fn))
 
 class CopiedDocumentChecker(object):
     """
@@ -62,7 +69,7 @@ class CopiedDocumentChecker(object):
     """
 
     def __init__(self, dirpath):
-        self.allowed_ext_names = ['docx', 'pdf']
+        self.allowed_ext_names = ['doc', 'docx', 'pdf']
         self.dirpath = dirpath
         self.convter = Converter()
         self.hw_dirname = 'converted_hws'
@@ -94,7 +101,7 @@ class CopiedDocumentChecker(object):
             os.mkdir('./' + self.hw_dirname)
 
         for idx, sfn in enumerate(self.sot_fext_names):
-            print("converting the file to .txt file ... | {}/{}".format(idx + 1, len(self.sot_fext_names)))
+            print("converting the file to .txt file ... | {}/{}".format(idx + 1, len(self.sot_fext_names)), end=' | ')
             self.convter.run(sfn, self.hw_dirname)
 
     def get_docname8content_dict(self):
@@ -252,6 +259,7 @@ class CopiedDocumentChecker(object):
         self.get_docname8content_dict()
         self.get_word_count_matrix()
         self.get_ecl_dist_matrix(penalty_to_similarity)
+        self.convter.del_doc_or_docx2pdf_fils()
 
         self.catch_cheaters(n_top_likely)
         self.plot_heatmap()
@@ -260,7 +268,7 @@ class CopiedDocumentChecker(object):
 if __name__ == '__main__':
 
     # directory of a folder that contains homework files.
-    dirpath = r'./students_homeworks_example'
+    dirpath = './students_homeworks_example'
 
     # run
     checker = CopiedDocumentChecker(dirpath)
