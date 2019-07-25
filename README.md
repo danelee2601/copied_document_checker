@@ -3,7 +3,6 @@
 <h2>Description</h2>
 It finds out copied documents among multiple documents.<br>
 [NOTE] This code can only accept file extentions of '.doc', '.docx'(ms word files), '.pdf' <br>
-[NOTE2] It implements faster with .pdf files because .doc, .docx files are converted to .pdf files internally.
 
 <h2>Installation</h2>
 pip install copied-document-checker<br>
