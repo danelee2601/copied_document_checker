@@ -1,7 +1,7 @@
 # copied_document_checker
 
 <h2>Description</h2>
-It finds out copied documents among multiple documents.<br>
+It finds out copied documents among multiple documents in a folder.<br>
 [NOTE] This code can only accept file extentions of '.doc', '.docx'(ms word files), '.pdf' <br>
 
 <h2>Installation</h2>
@@ -16,7 +16,7 @@ import os
 import copied_document_checker
 from copied_document_checker import copied_doc_checker <br>
 
-\# path of the directory that contains the document files that you want to inspect.
+\# path of the directory(folder) that contains the document files that you want to inspect.
 example_path = os.path.dirname(copied_document_checker.\_\_file\_\_) + '/students_homeworks_example'  # you can put your directory
 print('\n# example_path: ', example_path, end='\n\n')
 
