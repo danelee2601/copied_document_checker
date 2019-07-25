@@ -1,2 +1,27 @@
 # copied_document_checker
-Find out copied documents among multiple documents
+
+<h2>Description</h2>
+It finds out copied documents among multiple documents.<br>
+[NOTE] This code can only accept file extentions of '.docx'(ms word files), '.pdf' <br>
+
+<h2>Installation</h2>
+pip install copied-document-checker<br>
+
+<h2>Dependencies</h2>
+numpy, pandas, matplotlib, scikit-learn, pdfminer.six
+
+<h2>Quick Start</h2>
+<pre>
+from copied_document_checker import copied_document_checker<br>
+
+\# directory of a folder that contains the document files that you want to inspect.
+dirpath = './students_homeworks_example'
+
+\# run
+checker = copied_document_checker.CopiedDocumentChecker(dirpath)
+checker.run(n_top_likely=15)   # number of documents that are the most likely to be copied. 
+</pre>
+
+<h2>Based Algorithms/Knowledge</h2>
+Document Parsing: n-gram parsing, Bag Of Words (BOW)
+Measuring Similarity: Euclidean distance (modified by giving additional penalties for the matched word counts)
