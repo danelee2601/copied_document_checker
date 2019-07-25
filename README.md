@@ -15,7 +15,7 @@ numpy, pandas, matplotlib, scikit-learn, pdfminer.six, docx, comtypes
 import os
 import copied_document_checker
 from copied_document_checker import copied_doc_checker
-
+<br>
 \# path of the directory that contains the document files that you want to inspect.
 example_path = os.path.dirname(copied_document_checker.__file__) + '/students_homeworks_example'  # you can put your directory
 print('\n# example_path: ', example_path, end='\n\n')
