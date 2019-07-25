@@ -69,7 +69,7 @@ class CopiedDocumentChecker(object):
     """
 
     def __init__(self, dirpath):
-        self.allowed_ext_names = ['doc', 'docx', 'pdf']
+        self.allowed_ext_names = ['doc', 'docx', 'pdf', '__init__.py']
         self.dirpath = dirpath
         self.convter = Converter()
         self.hw_dirname = 'converted_hws'
@@ -90,7 +90,7 @@ class CopiedDocumentChecker(object):
             if fext_name_ext not in self.allowed_ext_names:
                 raise TypeError('Extension type is violated -> {}'.format(fext_name))
             else:
-                if ('.' in fext_name) and ('~$' not in fext_name[:2]):
+                if ('.' in fext_name) and ('~$' not in fext_name[:2]) and (not fext_name == '__init__.py'):
                     self.sot_fext_names.append(fext_name)
 
     def cvt_files2txt(self):
