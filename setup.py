@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name             = 'copied_document_checker',
-    version          = '1.2',
+    version          = '1.3',
     description      = 'Find out matched documents that are likely to be copied.',
     author           = 'Daesoo Lee',
     author_email     = 'danelee2601@naver.com',
