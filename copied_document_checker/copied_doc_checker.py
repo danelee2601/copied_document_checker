@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import comtypes.client
+import webbrowser
 #import pdfminer.six
 
 
@@ -69,7 +70,7 @@ class CopiedDocumentChecker(object):
     """
 
     def __init__(self, dirpath):
-        self.allowed_ext_names = ['doc', 'docx', 'pdf', '__init__.py']
+        self.allowed_ext_names = ['doc', 'docx', 'pdf']
         self.dirpath = dirpath
         self.convter = Converter()
         self.hw_dirname = 'converted_hws'
@@ -88,7 +89,8 @@ class CopiedDocumentChecker(object):
                 pass
 
             if fext_name_ext not in self.allowed_ext_names:
-                raise TypeError('Extension type is violated -> {}'.format(fext_name))
+                if (fext_name != '__init__.py') and (fext_name != '__pycache__'):
+                    raise TypeError('Extension type is violated -> {}'.format(fext_name))
             else:
                 if ('.' in fext_name) and ('~$' not in fext_name[:2]) and (not fext_name == '__init__.py'):
                     self.sot_fext_names.append(fext_name)
@@ -252,6 +254,9 @@ class CopiedDocumentChecker(object):
         shutil.copyfile(ssp1_ori_fname, './result/Top-{}/'.format(top_rank) + ssp1_ori_fname)
         shutil.copyfile(ssp2_ori_fname, './result/Top-{}/'.format(top_rank) + ssp2_ori_fname)
 
+    def open_result_folder(self):
+        webbrowser.open(os.getcwd() + '/result')
+
     def run(self, n_top_likely, penalty_to_similarity=10):
         self.ch_cwd()
         self.check_fext()
@@ -263,6 +268,7 @@ class CopiedDocumentChecker(object):
 
         self.catch_cheaters(n_top_likely)
         self.plot_heatmap()
+        self.open_result_folder()
 
 
 if __name__ == '__main__':
