@@ -8,7 +8,7 @@ It finds out copied documents among multiple documents.<br>
 pip install copied-document-checker<br>
 
 <h2>Dependencies</h2>
-numpy, pandas, matplotlib, scikit-learn, pdfminer.six, docx, win32com
+numpy, pandas, matplotlib, scikit-learn, pdfminer.six, docx, comtypes
 
 <h2>Quick Start</h2>
 <pre>
