@@ -11,7 +11,5 @@ setup(
     packages         = find_packages(),
     keywords         = ['copied documents', 'plagiarism', 'plagiarize'],
     python_requires  = '>=3',
-    package_data     =  {'students_homeworks_example' : ['*.*']},
-    include_pacakge_data = True,
-
+    package_data     =  {'': ['*.docx', '*.pdf']},
 )
