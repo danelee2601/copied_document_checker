@@ -8,7 +8,7 @@ It finds out copied documents among multiple documents.<br>
 pip install copied-document-checker<br>
 
 <h2>Dependencies</h2>
-numpy, pandas, matplotlib, scikit-learn, pdfminer.six
+numpy, pandas, matplotlib, scikit-learn, pdfminer.six, docx
 
 <h2>Quick Start</h2>
 <pre>
@@ -23,5 +23,5 @@ checker.run(n_top_likely=15)   # number of documents that are the most likely to
 </pre>
 
 <h2>Based Algorithms/Knowledge</h2>
-Document Parsing: n-gram parsing, Bag Of Words (BOW)
-Measuring Similarity: Euclidean distance (modified by giving additional penalties for the matched word counts)
+Document parsing: n-gram parsing, Bag Of Words (BOW)<br>
+Measuring similarity: euclidean distance (modified by giving additional penalties for the matched word counts)
